@@ -7,6 +7,7 @@ There's nothing much to see yet, but I've gotten the most important things down.
 ##You'll need:
 	- A compiler with C++11 support
 	- SDL2 and SDL2TTF installed
+	- Libconfig installed
 	- CMake
 	- Some TTF font for the graphics
 
