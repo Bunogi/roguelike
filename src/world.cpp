@@ -3,10 +3,8 @@
 
 #include "sdlclass.hpp"
 
-#include "screen.hpp"
-#include "world.hpp"
 #include "messages.hpp"
-#include "entities/player.hpp"
+#include "world.hpp"
 
 World::World(SDL& localsdlclass) : player(this) {
 	cameraX = cameraY = 0;

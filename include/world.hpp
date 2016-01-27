@@ -6,7 +6,6 @@
 #include "sdlclass.hpp"
 
 #include "entities/baseObjects.hpp"
-#include "entities/player.hpp"
 
 #define FONTSIZE 20
 
