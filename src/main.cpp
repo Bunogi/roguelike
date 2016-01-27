@@ -5,7 +5,10 @@
 #include "sdlclass.hpp"
 
 #include "messages.hpp"
+#include "save.hpp"
 #include "world.hpp"
+
+World * Save::world;
 
 int main(int argc, char **argv) {
 	if (argc != 2) {
@@ -21,6 +24,8 @@ int main(int argc, char **argv) {
 
 		bool quit = false;
 		World world(sdlclass);
+		Save::world = &world;
+		Save::loadMap();
 		SDL_Event event;
 		while (not quit) {
 			while (SDL_PollEvent(&event)) {
@@ -30,17 +35,38 @@ int main(int argc, char **argv) {
 						break;
 					case SDL_KEYDOWN:
 						switch (event.key.keysym.sym) {
-							case SDLK_UP:
+							case SDLK_KP_7:
+								world.player.move(-1, -1);
+								break;
+							case SDLK_KP_8:
 								world.player.move(0, -1);
 								break;
-							case SDLK_DOWN:
-								world.player.move(0, 1);
+							case SDLK_KP_9:
+								world.player.move(1, -1);
 								break;
-							case SDLK_LEFT:
+							case SDLK_KP_4:
 								world.player.move(-1, 0);
 								break;
-							case SDLK_RIGHT:
+							case SDLK_KP_5:
+								//Stand still goes here
+								break;
+							case SDLK_KP_6:
 								world.player.move(1, 0);
+								break;
+							case SDLK_KP_1:
+								world.player.move(-1, 1);
+								break;
+							case SDLK_KP_2:
+								world.player.move(0, 1);
+								break;
+							case SDLK_KP_3:
+								world.player.move(1, 1);
+								break;
+							case SDLK_F5:
+								Save::quickSave();
+								break;
+							case SDLK_F9:
+								//Quickload
 								break;
 						}
 						break;

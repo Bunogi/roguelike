@@ -14,6 +14,7 @@ endif()
 find_package(PkgConfig)
 pkg_search_module(SDL2 REQUIRED sdl2)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
+pkg_search_module(CONFIG++ REQUIRED libconfig++)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2TTF_INCLUDE_DIRS} lib/SDL2)
 
@@ -27,6 +28,7 @@ add_executable(
 	src/messages.cpp
 	src/world.cpp
 	src/entities/player.cpp
+	src/save.cpp
 )
 
-target_link_libraries(rogue ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARIES} sdlclass)
+target_link_libraries(rogue ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARIES} ${CONFIG++_LIBRARIES} sdlclass)

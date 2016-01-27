@@ -10,7 +10,6 @@
 #define FONTSIZE 20
 
 class World {
-	std::vector<std::unique_ptr<WorldObject> > objects;
 	std::vector<std::unique_ptr<Entity> > entities;
 
 	int cameraX, cameraY; //Left hand corner of the camera relative to the origin of the map
@@ -18,6 +17,7 @@ class World {
 	SDL* sdlclass;
 
 	public:
+		std::vector<std::unique_ptr<WorldObject> > objects;
 		World(SDL& localsdlclass);
 		void update(); //Updates Every entity on screen, to be called every time we recieve input
 		void draw(); //Draws the screen

@@ -2,10 +2,19 @@
 
 #include <string>
 
+enum WorldObjectTypes {
+	base = 0
+};
+
+enum EntityTypes {
+	player = 0
+};
+
 class WorldObject {
 	public:
 		int x, y;
 		bool solid;
+		int type = 0;
 		WorldObject(int xPos = 0, int yPos = 0) {
 			x = xPos;
 			y = yPos;
