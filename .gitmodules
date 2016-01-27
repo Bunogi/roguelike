@@ -1,0 +1,3 @@
+[submodule "lib/SDL2"]
+	path = lib/SDL2
+	url = https://github.com/Bunogi/Simple-Cpp-SDL2-wrapper-class
