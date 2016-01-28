@@ -69,4 +69,36 @@ namespace Save {
 			std::cerr << "Libconfig error: Wrong setting type for setting " << ex.getPath() << "\n";
 		}
 	}
+
+	void quickLoad() {
+		try {
+			libconfig::Config config;
+			config.readFile("../quickSave");
+
+			const libconfig::Setting& root = config.getRoot();
+			const libconfig::Setting& camera = root["camera"];
+
+			int camX, camY;
+			Save::world->getCameraPos(&camX, &camY);
+			Save::world->scrollView(-camX, -camY);
+
+			Save::world->scrollView(camera["x"], camera["y"]);
+
+			const libconfig::Setting& player = root["player"];
+			Save::world->player.x = player["x"];
+			Save::world->player.y = player["y"];
+
+			const libconfig::Setting& world = root["map"];
+
+			Save::world->objects.clear(); 
+
+			for (auto &i : world) {
+				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(i["x"], i["y"])));
+			}
+
+		}
+		catch (libconfig::ParseException &ex) {
+
+		}
+	}
 }

@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 								Save::quickSave();
 								break;
 							case SDLK_F9:
-								//Quickload
+								Save::quickLoad();
 								break;
 						}
 						break;
