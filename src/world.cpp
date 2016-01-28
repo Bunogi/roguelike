@@ -33,6 +33,25 @@ void World::draw() {
 	sdlclass->print((player.x + cameraX) * FONTSIZE, ((player.y + cameraY) * FONTSIZE) + FONTSIZE, player.getSprite());
 }
 
+bool World::canMove(int x, int y) {
+	for (auto &i : objects) {
+		if (i->x == x and i->y == y) {
+			if (isSolid(i->type))
+				return false;
+			else
+				return true;
+		}
+	}
+	return true;
+}
+
+bool World::isSolid(const WorldObject& object) {
+	if (object.type == WorldObjectTypes::wall) {
+		return true;
+	}
+	return false;
+}
+
 
 void World::scrollView(int dx, int dy) {
 	cameraX += dx;

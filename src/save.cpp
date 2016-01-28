@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <memory>
 
 #include <libconfig.h++>
 
@@ -11,13 +13,12 @@ namespace Save {
 		try {
 			libconfig::Config config;
 			config.readFile("../defmap.cfg");
-			const libconfig::Setting &root = config.getRoot();
-			const libconfig::Setting &tiles = root["tiles"];
+			const libconfig::Setting& root = config.getRoot();
+			const libconfig::Setting& tiles = root["tiles"];
 
 			if (tiles.isList()) {
 				for (auto &tile : tiles) {
-					Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(tile["x"], tile["y"])));
-			//		std::cerr << "pushed back a nice little object at " << returnObj << "\n";
+					Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(tile["type"], tile["x"], tile["y"])));
 				}
 			}
 		}
@@ -65,6 +66,7 @@ namespace Save {
 
 			config.writeFile("../quickSave");
 		}
+		//TODO: Properly catch and deal with exceptions
 		catch (libconfig::SettingTypeException &ex) {
 			std::cerr << "Libconfig error: Wrong setting type for setting " << ex.getPath() << "\n";
 		}
@@ -93,12 +95,12 @@ namespace Save {
 			Save::world->objects.clear(); 
 
 			for (auto &i : world) {
-				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(i["x"], i["y"])));
+				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(i["type"], i["x"], i["y"])));
 			}
 
 		}
 		catch (libconfig::ParseException &ex) {
-
+			//TODO: Properly catch and deal with exceptions
 		}
-	}
+	} 
 }

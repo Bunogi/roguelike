@@ -29,6 +29,7 @@ add_executable(
 	src/world.cpp
 	src/entities/player.cpp
 	src/save.cpp
+	src/sprites.cpp
 )
 
 target_link_libraries(rogue ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARIES} ${CONFIG++_LIBRARIES} sdlclass)
