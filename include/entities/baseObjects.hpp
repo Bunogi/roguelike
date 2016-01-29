@@ -11,9 +11,9 @@ enum WorldObjectTypes : int {
 };
 
 enum EntityTypes : int {
-	player = 0,
-	angryHobo = 1,
-	beggar
+	angryHobo = 0,
+	beggar = 1,
+	player //Player is at the very bottom so it is guaranteed to be unique
 };
 
 extern std::string spritesWorld[];

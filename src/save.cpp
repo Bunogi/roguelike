@@ -16,10 +16,15 @@ namespace Save {
 			const libconfig::Setting& root = config.getRoot();
 			const libconfig::Setting& tiles = root["tiles"];
 
-			if (tiles.isList()) {
-				for (auto &tile : tiles) {
-					Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(tile["type"], tile["x"], tile["y"])));
-				}
+			for (auto &tile : tiles) {
+				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(tile["type"], tile["x"], tile["y"])));
+			}
+
+
+			const libconfig::Setting& monsters = root["monsters"];
+			
+			for (auto &i : monsters) {
+				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], i["type"])));
 			}
 		}
 		catch (libconfig::ParseException &ex) {
@@ -64,6 +69,21 @@ namespace Save {
 				i++;
 			}
 
+			root.add("monsters", libconfig::Setting::Type::TypeList);
+			libconfig::Setting& monsters = root["monsters"];
+
+			i = 0;
+			for (auto it = Save::world->entities.begin(); it != Save::world->entities.end(); it++) {
+				monsters.add(libconfig::Setting::Type::TypeGroup);
+				monsters[i].add("x", libconfig::Setting::Type::TypeInt);
+				monsters[i]["x"] = (*it)->x;
+				monsters[i].add("y", libconfig::Setting::Type::TypeInt);
+				monsters[i]["y"] = (*it)->y;
+				monsters[i].add("type", libconfig::Setting::Type::TypeInt);
+				monsters[i]["type"] = (*it)->type;
+				i++;
+			}
+
 			config.writeFile("../quickSave");
 		}
 		//TODO: Properly catch and deal with exceptions
@@ -91,11 +111,17 @@ namespace Save {
 			Save::world->player.y = player["y"];
 
 			const libconfig::Setting& world = root["map"];
-
 			Save::world->objects.clear(); 
 
 			for (auto &i : world) {
 				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(i["type"], i["x"], i["y"])));
+			}
+
+			const libconfig::Setting& monsters = root["monsters"];
+			Save::world->entities.clear();
+
+			for (auto &i : monsters) {
+				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], i["type"])));
 			}
 
 		}
