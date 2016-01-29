@@ -5,11 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 include_directories(include)
 
-if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
-	if (CMAKE_COMPILER_IS_GNUCXX)
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
-	endif()
-endif()
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra")
 
 find_package(PkgConfig)
 pkg_search_module(SDL2 REQUIRED sdl2)
@@ -27,9 +23,10 @@ add_executable(
 	src/main.cpp
 	src/messages.cpp
 	src/world.cpp
-	src/entities/player.cpp
 	src/save.cpp
 	src/sprites.cpp
+	src/entities/player.cpp
+	src/entities/entity.cpp
 )
 
 target_link_libraries(rogue ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARIES} ${CONFIG++_LIBRARIES} sdlclass)

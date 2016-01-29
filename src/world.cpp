@@ -10,7 +10,9 @@
 World::World(SDL& localsdlclass) : player(this) {
 	cameraX = cameraY = 0;
 	sdlclass = &localsdlclass;
-
+	
+	entities.push_back(std::unique_ptr<Entity>(new Entity(this, 4, 4, EntityTypes::beggar)));
+	entities.push_back(std::unique_ptr<Entity>(new Entity(this, 2, 2)));
 }
 
 void World::update() {
@@ -29,11 +31,20 @@ void World::draw() {
 
 		sdlclass->print( (i->x + cameraX) * FONTSIZE, ((i->y + cameraY) * FONTSIZE) + FONTSIZE, i->getSprite());
 	}
+
+	for (auto &i : entities) {
+		sdlclass->print( (i->x + cameraX) * FONTSIZE, ((i->y + cameraY) * FONTSIZE) + FONTSIZE, i->getSprite());
+	}
 	
 	sdlclass->print((player.x + cameraX) * FONTSIZE, ((player.y + cameraY) * FONTSIZE) + FONTSIZE, player.getSprite());
 }
 
 bool World::canMove(int x, int y) {
+	//Check if player occupies the specified spot
+	if (player.x == x and player.y == y)
+		return false;
+
+	//Is there a solid object here?
 	for (auto &i : objects) {
 		if (i->x == x and i->y == y) {
 			if (isSolid(i->type))
@@ -41,6 +52,12 @@ bool World::canMove(int x, int y) {
 			else
 				return true;
 		}
+	}
+
+	//Is there an entity in the way?
+	for (auto &i : entities) {
+		if (i->x == x and i->y == y)
+			return false;
 	}
 	return true;
 }

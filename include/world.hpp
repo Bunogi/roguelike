@@ -27,7 +27,6 @@ class World {
 		bool isSolid(const WorldObject& object); //Finds out if an object is solid or not
 
 		class Player : public Entity {
-			World *worldClass;
 			public:
 				Player(World *localWorld,int xPos = 0, int yPos = 0);
 				void update();

@@ -3,4 +3,4 @@
 #include "entities/baseObjects.hpp"
 
 std::string spritesWorld[] = {"`", "#", "."};
-std::string spritesEntities[] = {"@"};
+std::string spritesEntities[] = {"@", "h", "b"};

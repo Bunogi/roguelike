@@ -9,11 +9,10 @@ World::Player::Player(World *localWorld, int xPos, int yPos) {
 }
 
 void World::Player::move(int dx, int dy) {
-	if (not worldClass->canMove(x + dx, y + dy)) {
-		return;
+	if (worldClass->canMove(x + dx, y + dy)) {
+		x += dx;
+		y += dy;
 	}
-	x += dx;
-	y += dy;
 
 	int camX, camY;
 	int camW, camH;

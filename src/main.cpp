@@ -69,13 +69,13 @@ int main(int argc, char **argv) {
 								Save::quickLoad();
 								break;
 						}
+						world.update();
 						break;
 					}
 				}
 			
 			sdlclass.clearRenderer();
 			Messages::printMessage(sdlclass);
-			world.update();
 			world.draw();
 			sdlclass.renderPresent();
 		}
