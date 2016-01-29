@@ -25,6 +25,7 @@ add_executable(
 	src/world.cpp
 	src/save.cpp
 	src/sprites.cpp
+	src/input.cpp
 	src/entities/player.cpp
 	src/entities/entity.cpp
 )
