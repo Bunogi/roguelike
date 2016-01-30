@@ -1,6 +1,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "sdlclass.hpp"
 
@@ -15,11 +16,11 @@ World::World(SDL& localsdlclass) : player(this) {
 }
 
 void World::update() {
+	entities.erase(std::remove_if(entities.begin(), entities.end(), [](std::unique_ptr<Entity>& ent){ return ent->hp <= 0; }), entities.end());
 	for (auto &i : entities) {
 		i->update();
 	}
 	player.update();
-	//Messages::message = "x: " + std::to_string(player.x) + " y: " + std::to_string(player.y) + " cx: " + std::to_string(cameraX) + " cy: " + std::to_string(cameraY);
 }
 
 void World::draw() {
@@ -56,16 +57,21 @@ void World::draw() {
 	sdlclass->print((player.x + cameraX) * FONTSIZE, ((player.y + cameraY) * FONTSIZE) + FONTSIZE, player.getSprite());
 }
 
+Entity *World::checkEntity(int x, int y) {
+	//Is there an entity in this spot?
+	for (auto &i : entities) {
+		if (i->x == x and i->y == y)
+			return i.get();
+	}
+
+	return nullptr; //Nothing here
+
+}
+
 bool World::canMove(int x, int y) {
 	//Check if player occupies the specified spot
 	if (player.x == x and player.y == y)
 		return false;
-
-	//Is there an entity in the way?
-	for (auto &i : entities) {
-		if (i->x == x and i->y == y)
-			return false;
-	}
 
 	//Is there a solid object here?
 	for (auto &i : objects) {

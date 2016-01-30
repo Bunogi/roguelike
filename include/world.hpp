@@ -22,6 +22,7 @@ class World {
 		void draw(); //Draws the screen
 		void getCameraPos(int *x, int *y);
 		void scrollView(int x, int y = 0); //Scroll the view
+		Entity *checkEntity(int x, int y);
 		bool canMove(int x, int y); //Check whenever or not an entity can move to location (x,y)
 		bool isSolid(const WorldObject& object); //Finds out if an object is solid or not
 

@@ -20,6 +20,8 @@ extern std::string spritesWorld[];
 
 extern std::string spritesEntities[];
 
+extern std::string namesEntities[];
+
 class WorldObject {
 	public:
 		int x, y;
@@ -42,12 +44,27 @@ class Entity : public WorldObject {
 			worldClass = localWorld;
 			x = xPos;
 			y = yPos;
+			switch (type) {
+				case EntityTypes::beggar:
+					hp = 2;
+					strength = 0;
+					break;
+				case EntityTypes::angryHobo:
+					hp = 3;
+					strength = 1;
+					break;
+			}
 		}
 		int hp;
+		int strength; //Attack damage
 		void update();
 		const std::string name = "";
 		std::string getSprite() {
 			return spritesEntities[type];
+		}
+
+		std::string getName() {
+			return namesEntities[type];
 		}
 
 };

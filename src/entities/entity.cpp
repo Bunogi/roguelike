@@ -1,7 +1,10 @@
+#include <iostream>
+
 #include "entities/baseObjects.hpp"
 #include "world.hpp"
 
 void Entity::update() {
+
 	int px = worldClass->player.x;
 	int py = worldClass->player.y;
 

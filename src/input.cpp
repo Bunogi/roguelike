@@ -3,10 +3,15 @@
 #include "input.hpp"
 #include "world.hpp"
 #include "save.hpp"
+#include "messages.hpp"
 
 namespace Input {
 	void handleInput(SDL_Keycode& key, World& world) {
 			bool timePassed = true;
+			if (Messages::messages.size() > 1) {
+				Messages::nextMessage();
+				return;
+			}
 			switch (key) {
 				case SDLK_KP_7:
 					world.player.move(-1, -1);
@@ -48,6 +53,7 @@ namespace Input {
 			}
 			if (timePassed) {
 				world.update();
+				Messages::nextMessage();
 			}
 	}
 }

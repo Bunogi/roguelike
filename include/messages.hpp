@@ -1,11 +1,13 @@
 #pragma once
 
 #include <string>
+#include <queue>
 
 #include "sdlclass.hpp"
 
 namespace Messages {
-	extern std::string message;
+	extern std::queue<std::string> messages;
 	void printMessage(SDL& sdlclass);
-	bool sendMessage(std::string& msg);
+	void sendMessage(std::string& msg);
+	void nextMessage();
 }
