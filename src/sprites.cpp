@@ -2,6 +2,6 @@
 
 #include "entities/baseObjects.hpp"
 
-std::string spritesWorld[] = {"`", "#", "."};
-std::string spritesEntities[] = {"h", "b"};
+char spritesWorld[] = "`#.";
+char spritesEntities[] = "hb";
 std::string namesEntities[] = {"Angry Hobo", "Beggar"};

@@ -86,7 +86,7 @@ bool World::canMove(int x, int y) {
 }
 
 bool World::isSolid(const WorldObject& object) {
-	if (object.type == WorldObjectTypes::wall) {
+	if (object.type == '#') {
 		return true;
 	}
 	return false;

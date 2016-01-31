@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <fstream>
 
 #include <libconfig.h++>
 
@@ -10,25 +11,33 @@
 
 namespace Save {
 	void loadMap() {
-		try {
-			libconfig::Config config;
-			config.readFile("../defmap.cfg");
-			const libconfig::Setting& root = config.getRoot();
-			const libconfig::Setting& tiles = root["tiles"];
-
-			for (auto &tile : tiles) {
-				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(tile["type"], tile["x"], tile["y"])));
-			}
-
-
-			const libconfig::Setting& monsters = root["monsters"];
-			
-			for (auto &i : monsters) {
-				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], i["type"])));
-			}
+		std::ifstream map;
+		map.open("../town.map");
+		if (not map.is_open()) {
+			std::cerr << "Failed to load map\n";
+			return;
 		}
-		catch (libconfig::ParseException &ex) {
-			std::cerr << "Libconfig error: " << ex.getError() << " on line " << ex.getLine();
+
+		std::string line;
+		int x = 0, y = 0;
+		while (std::getline(map, line)) {
+			for (auto &i : line) {
+				for (int j = 0; spritesWorld[j] != '\0'; j++) {
+					if (i == spritesWorld[j]) {
+						Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(i, x, y)));
+						break;
+					}
+				}
+				for (int j = 0; spritesEntities[j] != '\0'; j++) {
+					if (i == spritesEntities[j]) {
+						Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, x, y, i)));
+						break;
+					}
+				}
+				x++;
+			}
+			x = 0;
+			y++;
 		}
 	}
 
@@ -65,7 +74,7 @@ namespace Save {
 				worldTiles[i].add("y", libconfig::Setting::Type::TypeInt);
 				worldTiles[i]["y"] = (*it)->y;
 				worldTiles[i].add("type", libconfig::Setting::Type::TypeInt);
-				worldTiles[i]["type"] = (*it)->type;
+				worldTiles[i]["type"] = static_cast<int>((*it)->type);
 				i++;
 			}
 
@@ -80,7 +89,7 @@ namespace Save {
 				monsters[i].add("y", libconfig::Setting::Type::TypeInt);
 				monsters[i]["y"] = (*it)->y;
 				monsters[i].add("type", libconfig::Setting::Type::TypeInt);
-				monsters[i]["type"] = (*it)->type;
+				monsters[i]["type"] = static_cast<int>((*it)->type);
 				i++;
 			}
 
@@ -114,14 +123,18 @@ namespace Save {
 			Save::world->objects.clear(); 
 
 			for (auto &i : world) {
-				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(i["type"], i["x"], i["y"])));
+				int type;
+				i.lookupValue("type", type);
+				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(type, i["x"], i["y"])));
 			}
 
 			const libconfig::Setting& monsters = root["monsters"];
 			Save::world->entities.clear();
 
 			for (auto &i : monsters) {
-				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], i["type"])));
+				int type;
+				i.lookupValue("type", type);
+				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], type)));
 			}
 
 		}
@@ -130,3 +143,4 @@ namespace Save {
 		}
 	} 
 }
+
