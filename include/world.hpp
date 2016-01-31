@@ -32,6 +32,7 @@ class World {
 				const int type = EntityTypes::player;
 				void update();
 				void move(int dx, int dy = 0);
+				int attack(int damage);
 				std::string getSprite() {
 					return "@";
 				}

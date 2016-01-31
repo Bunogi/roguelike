@@ -7,11 +7,12 @@
 
 namespace Input {
 	void handleInput(SDL_Keycode& key, World& world) {
-			bool timePassed = true;
 			if (Messages::messages.size() > 1) {
 				Messages::nextMessage();
 				return;
 			}
+
+			bool timePassed = true;
 			switch (key) {
 				case SDLK_KP_7:
 					world.player.move(-1, -1);

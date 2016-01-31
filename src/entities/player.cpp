@@ -59,3 +59,10 @@ void World::Player::update() {
 
 }
 
+int World::Player::attack(int damage) {
+	//TODO: Defence and damage resistance and all that good stuff
+	//std::cerr << "Player attacked!\n";
+	hp -= damage;
+	return hp;
+}
+
