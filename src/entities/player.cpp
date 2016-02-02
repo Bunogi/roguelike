@@ -1,6 +1,6 @@
 #include "sdlclass.hpp"
 
-#include "entities/baseObjects.hpp"
+#include "entities/objects.hpp"
 #include "world.hpp"
 #include "messages.hpp"
 

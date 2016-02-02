@@ -7,7 +7,7 @@
 
 #include "save.hpp"
 #include "world.hpp"
-#include "entities/baseObjects.hpp"
+#include "entities/objects.hpp"
 
 namespace Save {
 	void loadMap() {

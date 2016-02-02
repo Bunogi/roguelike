@@ -1,6 +1,6 @@
 #include <string>
 
-#include "entities/baseObjects.hpp"
+#include "entities/objects.hpp"
 
 char spritesWorld[] = "`#.";
 char spritesEntities[] = "hb";
