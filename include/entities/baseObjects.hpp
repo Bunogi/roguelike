@@ -62,7 +62,7 @@ class Entity : public WorldObject {
 		int strength; //Attack damage
 		void update();
 		std::string getSprite() {
-			return std::string(1, spritesEntities[type]);
+			return spritesEntities[type];
 		}
 
 		std::string getName() {
