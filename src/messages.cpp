@@ -17,13 +17,14 @@ namespace Messages {
 	}
 
 	void nextMessage() {
-		if (messages.size() == 0)
+		int size = messages.size();
+		if (size == 0)
 			text = " ";
-		else if (messages.size() == 1) {
+		else if (size == 1) {
 			text = messages.front();
 			messages.pop();
 		}
-		else if (messages.size() > 1) {
+		else if (size > 1) {
 			text = messages.front() + " [more..]";
 			messages.pop();
 		}

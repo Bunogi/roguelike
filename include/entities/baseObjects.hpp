@@ -38,21 +38,21 @@ class WorldObject {
 class Entity : public WorldObject {
 	public:
 		World *worldClass;
-		const char type;
+		const int type;
 		std::string name;
 
-		Entity(World *localWorld = nullptr, int xPos = 0, int yPos = 0, const char typeE = 1) : type(typeE) {
+		Entity(World *localWorld = nullptr, int xPos = 0, int yPos = 0, const int typeE = 1) : type(typeE) {
 			worldClass = localWorld;
 			x = xPos;
 			y = yPos;
 			switch (type) {
-				case 'b': //Beggar
+				case EntityTypes::beggar:
 					hp = 2;
 					strength = 0;
 					name = "Beggar";
 					break;
-				case 'h': //Hobo
-					hp = 3;
+				case EntityTypes::angryHobo: 
+					hp = 4;
 					strength = 1;
 					name = "Angry Hobo";
 					break;
@@ -62,7 +62,7 @@ class Entity : public WorldObject {
 		int strength; //Attack damage
 		void update();
 		std::string getSprite() {
-			return std::string(1, type);
+			return std::string(1, spritesEntities[type]);
 		}
 
 		std::string getName() {

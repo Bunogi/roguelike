@@ -7,7 +7,7 @@
 
 namespace Input {
 	void handleInput(SDL_Keycode& key, World& world) {
-			if (Messages::messages.size() > 1) {
+			if (Messages::messages.size() >= 1) {
 				Messages::nextMessage();
 				return;
 			}

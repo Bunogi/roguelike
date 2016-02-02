@@ -28,17 +28,23 @@ namespace Save {
 						break;
 					}
 				}
-				for (int j = 0; spritesEntities[j] != '\0'; j++) {
-					if (i == spritesEntities[j]) {
-						Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, x, y, i)));
-						break;
-					}
-				}
 				x++;
 			}
 			x = 0;
 			y++;
 		}
+
+		//try {
+			libconfig::Config config;
+			config.readFile("../town.things");
+
+			const libconfig::Setting& root = config.getRoot();
+			const libconfig::Setting& entities = root["entities"];
+
+			for (auto &i : entities) {
+				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], i["type"])));
+			}
+		//}
 	}
 
 	void quickSave() {
