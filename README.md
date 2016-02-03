@@ -26,3 +26,4 @@ git submodule init && git submodule update; #To download my SDL2 wrapper class
 mkdir build && cd build; 
 cmake ..  && make;
 ```
+If you get linker errors about undefined references, try running `cmake .. && make` one more time. Not sure why this is sometimes required. 
