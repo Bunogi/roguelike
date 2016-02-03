@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <memory>
 #include <fstream>
 
 #include <libconfig.h++>
@@ -24,7 +23,7 @@ namespace Save {
 			for (auto &i : line) {
 				for (int j = 0; spritesWorld[j] != '\0'; j++) {
 					if (i == spritesWorld[j]) {
-						Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(i, x, y)));
+						Save::world->objects.push_back(new WorldObject(i, x, y));
 						break;
 					}
 				}
@@ -42,7 +41,12 @@ namespace Save {
 			const libconfig::Setting& entities = root["entities"];
 
 			for (auto &i : entities) {
-				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], i["type"])));
+				Save::world->entities.push_back(new Entity(Save::world, i["x"], i["y"], i["type"]));
+			}
+
+			const libconfig::Setting& items = root["items"];
+			for (auto &i : items) {
+				Save::world->items.push_back(new Item(i["type"], i["x"], i["y"]));
 			}
 		//}
 	}
@@ -131,7 +135,7 @@ namespace Save {
 			for (auto &i : world) {
 				int type;
 				i.lookupValue("type", type);
-				Save::world->objects.push_back(std::unique_ptr<WorldObject>(new WorldObject(type, i["x"], i["y"])));
+				Save::world->objects.push_back(new WorldObject(type, i["x"], i["y"]));
 			}
 
 			const libconfig::Setting& monsters = root["monsters"];
@@ -140,7 +144,7 @@ namespace Save {
 			for (auto &i : monsters) {
 				int type;
 				i.lookupValue("type", type);
-				Save::world->entities.push_back(std::unique_ptr<Entity>(new Entity(Save::world, i["x"], i["y"], type)));
+				Save::world->entities.push_back(new Entity(Save::world, i["x"], i["y"], type));
 			}
 
 		}

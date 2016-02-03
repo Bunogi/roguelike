@@ -10,3 +10,10 @@ entities : (
 		type = 0;
 	}
 )
+items : (
+	{
+		x = 10;
+		y = 5;
+		type = 0;
+	}
+)

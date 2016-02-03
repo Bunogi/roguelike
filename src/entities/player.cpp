@@ -16,15 +16,10 @@ void World::Player::move(int dx, int dy) {
 	if (monster != nullptr) { //There's a monster in the way!
 		monster->hp -= strength; //Attack it
 
-		std::string message = "You attack the ";
-		message += monster->getName();
-		message += "! It took " + std::to_string(strength) + " damage!";
-		Messages::sendMessage(message);
+		Messages::sendMessage("You attack the " + monster->name + "! It took " +  std::to_string(strength) + " damage!");
 
-		if (monster->hp <= 0) {
-			message = "You have slain the " + monster->getName() + "!";
-			Messages::sendMessage(message);
-		}
+		if (monster->hp <= 0) 
+			Messages::sendMessage("You have slain the " + monster->name + "!");
 		return;
 	}
 	
@@ -64,5 +59,24 @@ int World::Player::attack(int damage) {
 	//std::cerr << "Player attacked!\n";
 	hp -= damage;
 	return hp;
+}
+
+void World::Player::pickupItem(std::vector<Item*>& itemList) {
+	for (auto it = itemList.begin(); it != itemList.end(); ) {
+		if ((*it)->x == x and (*it)->y == y) {
+			inventory.push_back({(*it)->type, (*it)->quantity});
+			std::string message;
+			message = "You picked up " + std::to_string((*it)->quantity) + " " + (*it)->name;
+			Messages::sendMessage(message);
+
+			delete *it;
+			it = itemList.erase(it);
+			return;
+		}
+		else
+			it++;
+	}
+
+	Messages::sendMessage("There's nothing here to pick up!");
 }
 

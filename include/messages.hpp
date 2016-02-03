@@ -8,6 +8,6 @@
 namespace Messages {
 	extern std::queue<std::string> messages;
 	void printMessage(SDL& sdlclass);
-	void sendMessage(std::string& msg);
+	void sendMessage(std::string msg);
 	void nextMessage();
 }

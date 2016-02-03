@@ -12,7 +12,7 @@ namespace Messages {
 		sdlclass.print(0, 0, text);
 	}
 
-	void sendMessage(std::string& msg) {
+	void sendMessage(const std::string msg) {
 		messages.push(msg);
 	}
 

@@ -13,8 +13,7 @@ void Entity::update() {
 	if (std::abs(x - px) < 2 and std::abs(y - py) < 2) {
 		//TODO: Add accuracy
 		worldClass->player.attack(strength);
-		std::string message = "The " + getName() + " attacks you! You take " + std::to_string(strength) + " damage!";
-		Messages::sendMessage(message);
+		Messages::sendMessage("The " + name + " attacks you! You take " + std::to_string(strength) + " damage!");
 		return;
 	}
 

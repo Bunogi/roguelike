@@ -49,11 +49,18 @@ namespace Input {
 					Save::quickLoad();
 					timePassed = false;
 					break;
+				case SDLK_g:
+					world.player.pickupItem(world.items);
+					break;
 				default:
 					timePassed = false;
 			}
 			if (timePassed) {
 				world.update();
+				Item *item = world.checkItem(world.player.x, world.player.y);
+				if (item != nullptr) {
+					Messages::sendMessage("You see a " + item->name + " on the ground");
+				}
 				Messages::nextMessage();
 			}
 	}

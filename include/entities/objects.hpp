@@ -4,6 +4,11 @@
 
 class World;
 
+enum ItemType : int {
+	food = 0,
+	torch = 1
+};
+
 enum WorldObjectTypes : int {
 	base = 0, 
 	wall = 1,
@@ -12,14 +17,14 @@ enum WorldObjectTypes : int {
 
 enum EntityTypes : int {
 	angryHobo = 0,
-	beggar = 1,
-	player //Player is at the very bottom so it is guaranteed to be unique
+	beggar = 1
 };
 
 extern char spritesWorld[];
 extern char spritesEntities[];
 
 extern std::string namesEntities[];
+extern std::string namesItems[];
 
 class WorldObject {
 	public:
@@ -64,9 +69,19 @@ class Entity : public WorldObject {
 		std::string getSprite() {
 			return std::string(1, spritesEntities[type]);
 		}
+};
 
-		std::string getName() {
-			return name;
-		}
+class Item : public WorldObject {
+	public:
+		const int type;
+		int quantity;
+		std::string& name;
+		std::string sprite;
 
+		Item(const int typeI, int xPos, int yPos, int qty = 1) : type(typeI), name(namesItems[type]) {
+			x = xPos;
+			y = yPos;
+			quantity = qty;
+			sprite = "?";
+		};
 };

@@ -1,4 +1,3 @@
-#include <memory>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -16,7 +15,7 @@ World::World(SDL& localsdlclass) : player(this) {
 }
 
 void World::update() {
-	entities.erase(std::remove_if(entities.begin(), entities.end(), [](std::unique_ptr<Entity>& ent){ return ent->hp <= 0; }), entities.end());
+	entities.erase(std::remove_if(entities.begin(), entities.end(), [](Entity*& ent){ return ent->hp <= 0; }), entities.end());
 	for (auto &i : entities) {
 		i->update();
 	}
@@ -49,23 +48,50 @@ void World::draw() {
 		if (i->x == player.x and i->y == player.y)
 			print = false;
 
-		if(print) //Only draw the objects in spots where we haven't drawn anything
+		if (print) //Only draw the objects in spots where we haven't drawn anything
 			sdlclass->print((i->x + cameraX) * FONTSIZE, ((i->y + cameraY) * FONTSIZE) + FONTSIZE, i->getSprite());
 	}
 
 	
 	sdlclass->print((player.x + cameraX) * FONTSIZE, ((player.y + cameraY) * FONTSIZE) + FONTSIZE, player.getSprite());
+
+	for (auto &i : items) {
+		bool print = true;
+
+		for (auto &j : drawnEntities) {
+			if (j.x == i->x and j.y == i->y) {
+				print = false;
+				break;
+			}
+		}
+
+		if (i->x == player.x and i->y == player.y) 
+			print = false;
+
+		if (print)
+			sdlclass->print((i->x + cameraX) * FONTSIZE, ((i->y + cameraY) * FONTSIZE) + FONTSIZE, i->sprite);
+	}
 }
 
 Entity *World::checkEntity(int x, int y) {
 	//Is there an entity in this spot?
 	for (auto &i : entities) {
 		if (i->x == x and i->y == y)
-			return i.get();
+			return i;
 	}
 
 	return nullptr; //Nothing here
 
+}
+
+Item *World::checkItem(int x, int y) {
+	//Same as checkEntity()
+	for (auto &i : items) {
+		if (i->x == x and i->y == y) 
+			return i;
+	}
+
+	return nullptr;
 }
 
 bool World::canMove(int x, int y) {
