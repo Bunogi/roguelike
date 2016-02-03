@@ -160,6 +160,10 @@ namespace Save {
 			Save::world->player.x = player["x"];
 			Save::world->player.y = player["y"];
 
+			for (auto &i : player["inventory"]) {
+				Save::world->player.inventory.push_back(World::Player::InventoryItem(i["type"], i["quantity"]));
+			}
+
 			const libconfig::Setting& world = root["map"];
 			Save::world->objects.clear(); 
 
@@ -182,6 +186,7 @@ namespace Save {
 			for (auto &i : items) {
 				Save::world->items.push_back(new Item(i["type"], i["x"], i["y"], i["quantity"]));
 			}
+
 
 		}
 		catch (libconfig::ParseException &ex) {
