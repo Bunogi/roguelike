@@ -72,11 +72,25 @@ namespace Save {
 			playerConf["x"] = Save::world->player.x;
 			playerConf.add("y", libconfig::Setting::Type::TypeInt);
 			playerConf["y"] = Save::world->player.y;
+			playerConf.add("items", libconfig::Setting::TypeList);
+
+			libconfig::Setting& playerItems = playerConf["items"];
+
+			int i = 0;
+			for (auto it = Save::world->player.inventory.begin(); it != Save::world->player.inventory.end(); it++) {
+				playerItems.add(libconfig::Setting::Type::TypeGroup);
+				playerItems[i].add("type", libconfig::Setting::Type::TypeInt);
+				playerItems["type"] = it->type;
+				playerItems[i].add("quantity", libconfig::Setting::Type::TypeInt);
+				playerItems["quantity"] = it->quantity;
+				i++;
+			}
+
 
 			root.add("map", libconfig::Setting::Type::TypeList);
 			libconfig::Setting& worldTiles = root["map"];
-			
-			int i = 0;
+
+			i = 0;
 			for (auto it = Save::world->objects.begin(); it != Save::world->objects.end(); it++) {
 				worldTiles.add(libconfig::Setting::Type::TypeGroup);
 				worldTiles[i].add("x", libconfig::Setting::Type::TypeInt);
@@ -100,6 +114,23 @@ namespace Save {
 				monsters[i]["y"] = (*it)->y;
 				monsters[i].add("type", libconfig::Setting::Type::TypeInt);
 				monsters[i]["type"] = static_cast<int>((*it)->type);
+				i++;
+			}
+
+			root.add("items", libconfig::Setting::Type::TypeList);
+			libconfig::Setting& items = root["items"];
+
+			i = 0;
+			for (auto it = Save::world->items.begin(); it != Save::world->items.end(); it++) {
+				items.add(libconfig::Setting::Type::TypeGroup);
+				items[i].add("x", libconfig::Setting::Type::TypeInt);
+				items[i]["x"] = (*it)->x;
+				items[i].add("y", libconfig::Setting::Type::TypeInt);
+				items[i]["y"] = (*it)->y;
+				items[i].add("type", libconfig::Setting::Type::TypeInt);
+				items[i]["type"] = static_cast<int>((*it)->type);
+				items[i].add("quantity", libconfig::Setting::Type::TypeInt);
+				items[i]["quantity"] = (*it)->quantity;
 				i++;
 			}
 
@@ -142,9 +173,14 @@ namespace Save {
 			Save::world->entities.clear();
 
 			for (auto &i : monsters) {
-				int type;
-				i.lookupValue("type", type);
-				Save::world->entities.push_back(new Entity(Save::world, i["x"], i["y"], type));
+				Save::world->entities.push_back(new Entity(Save::world, i["x"], i["y"], i["type"]));
+			}
+
+			const libconfig::Setting& items = root["items"];
+			Save::world->items.clear();
+
+			for (auto &i : items) {
+				Save::world->items.push_back(new Item(i["type"], i["x"], i["y"], i["quantity"]));
 			}
 
 		}

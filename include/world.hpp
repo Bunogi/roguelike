@@ -27,7 +27,7 @@ class World {
 		bool canMove(int x, int y); //Check whenever or not an entity can move to location (x,y)
 		bool isSolid(const WorldObject& object); //Finds out if an object is solid or not
 
-		class Player : public Entity {
+		struct Player : public Entity {
 			struct InventoryItem {
 				int quantity;
 				const int type;
@@ -37,17 +37,16 @@ class World {
 					name = namesItems[typeI];
 				}
 			};
-			public:
-				std::vector<InventoryItem> inventory;
-				Player(World *localWorld,int xPos = 0, int yPos = 0);
-				void update();
-				void move(int dx, int dy = 0);
-				void pickupItem(std::vector<Item*>& itemList);
-				int attack(int damage);
+			std::vector<InventoryItem> inventory;
+			Player(World *localWorld,int xPos = 0, int yPos = 0);
+			void update();
+			void move(int dx, int dy = 0);
+			void pickupItem(std::vector<Item*>& itemList);
+			int attack(int damage);
 
-				std::string getSprite() {
-					return "@";
-				}
+			std::string getSprite() {
+				return "@";
+			}
 		};
 
 		Player player; //Stores the player
