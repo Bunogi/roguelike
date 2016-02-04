@@ -8,10 +8,11 @@
 #include "world.hpp"
 #include "save.hpp"
 
-World::World(SDL& localsdlclass) : player(this) {
+extern SDL *sdlClass;
+extern const int gFontSize;
+
+World::World() : player(this) {
 	cameraX = cameraY = 0;
-	sdlclass = &localsdlclass;
-	
 }
 
 void World::update() {
@@ -30,7 +31,7 @@ void World::draw() {
 	std::vector<Point> drawnEntities;
 
 	for (auto &i : entities) {
-		sdlclass->print((i->x + cameraX) * FONTSIZE, ((i->y + cameraY) * FONTSIZE) + FONTSIZE, i->getSprite());
+		sdlClass->print((i->x + cameraX) * gFontSize, ((i->y + cameraY) * gFontSize) + gFontSize, i->getSprite());
 		drawnEntities.push_back({i->x, i->y});
 	}
 
@@ -49,11 +50,11 @@ void World::draw() {
 			print = false;
 
 		if (print) //Only draw the objects in spots where we haven't drawn anything
-			sdlclass->print((i->x + cameraX) * FONTSIZE, ((i->y + cameraY) * FONTSIZE) + FONTSIZE, i->getSprite());
+			sdlClass->print((i->x + cameraX) * gFontSize, ((i->y + cameraY) * gFontSize) + gFontSize, i->getSprite());
 	}
 
 	
-	sdlclass->print((player.x + cameraX) * FONTSIZE, ((player.y + cameraY) * FONTSIZE) + FONTSIZE, player.getSprite());
+	sdlClass->print((player.x + cameraX) * gFontSize, ((player.y + cameraY) * gFontSize) + gFontSize, player.getSprite());
 
 	for (auto &i : items) {
 		bool print = true;
@@ -69,7 +70,7 @@ void World::draw() {
 			print = false;
 
 		if (print)
-			sdlclass->print((i->x + cameraX) * FONTSIZE, ((i->y + cameraY) * FONTSIZE) + FONTSIZE, i->sprite);
+			sdlClass->print((i->x + cameraX) * gFontSize, ((i->y + cameraY) * gFontSize) + gFontSize, i->sprite);
 	}
 }
 

@@ -9,7 +9,9 @@
 #include "world.hpp"
 #include "input.hpp"
 
-World * Save::world;
+World *Save::world;
+SDL *sdlClass;
+int gFontSize = 20;
 
 int main(int argc, char **argv) {
 	if (argc != 2) {
@@ -18,13 +20,13 @@ int main(int argc, char **argv) {
 	}
 
 	try {
-		SDL sdlclass(1366, 768);
-		sdlclass.setRenderClearColour({0, 0, 0, 0xFF});
+		sdlClass = new SDL(1366, 768);
+		sdlClass->setRenderClearColour({0, 0, 0, 0xFF});
 		
-		sdlclass.loadFont(std::string(argv[1]), FONTSIZE);
+		sdlClass->loadFont(std::string(argv[1]), gFontSize);
 
 		bool quit = false;
-		World world(sdlclass);
+		World world;
 		Save::world = &world;
 		Save::loadMap();
 		SDL_Event event;
@@ -35,19 +37,20 @@ int main(int argc, char **argv) {
 						quit = true;
 						break;
 					case SDL_KEYDOWN:
-						Input::handleInput(event.key.keysym.sym, world);
+						Input::handleGameInput(event.key.keysym.sym, world);
 						break;
 					}
 				}
 			
-			sdlclass.clearRenderer();
-			Messages::printMessage(sdlclass);
+			sdlClass->clearRenderer();
+			Messages::printMessage();
 			world.draw();
-			sdlclass.renderPresent();
+			sdlClass->renderPresent();
 		}
+		delete sdlClass;
 	}
 	catch (SDLException &ex) {
 		ex.printError();
+		delete sdlClass;
 	}
-	
 }

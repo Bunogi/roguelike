@@ -5,14 +5,16 @@
 
 #include "messages.hpp"
 
+extern SDL *sdlClass;
+
 namespace Messages {
 	std::queue<std::string> messages;
 	std::string text = " ";
-	void printMessage(SDL& sdlclass) {
-		sdlclass.print(0, 0, text);
+	void printMessage() {
+		sdlClass->print(0, 0, text);
 	}
 
-	void sendMessage(const std::string msg) {
+	void sendMessage(const std::string&& msg) {
 		messages.push(msg);
 	}
 

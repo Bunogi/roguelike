@@ -4,6 +4,9 @@
 #include "world.hpp"
 #include "messages.hpp"
 
+extern SDL *sdlClass;
+extern const int gFontSize;
+
 World::Player::Player(World *localWorld, int xPos, int yPos) {
 	worldClass = localWorld;
 	x = xPos;
@@ -31,8 +34,8 @@ void World::Player::move(int dx, int dy) {
 	int camX, camY;
 	int camW, camH;
 	worldClass->getCameraPos(&camX, &camY);
-	camW = worldClass->sdlclass->getWidth() / FONTSIZE;
-	camH = worldClass->sdlclass->getHeight() / FONTSIZE;
+	camW = sdlClass->getWidth() / gFontSize;
+	camH = sdlClass->getHeight() / gFontSize;
 	
 	if (x + camX < 5 ) {
 		worldClass->scrollView(5);
@@ -65,9 +68,7 @@ void World::Player::pickupItem(std::vector<Item*>& itemList) {
 	for (auto it = itemList.begin(); it != itemList.end(); ) {
 		if ((*it)->x == x and (*it)->y == y) {
 			inventory.push_back({(*it)->type, (*it)->quantity});
-			std::string message;
-			message = "You picked up " + std::to_string((*it)->quantity) + " " + (*it)->name;
-			Messages::sendMessage(message);
+			Messages::sendMessage("You picked up " + std::to_string((*it)->quantity) + " " + (*it)->name);
 
 			delete *it;
 			it = itemList.erase(it);

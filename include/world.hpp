@@ -2,22 +2,16 @@
 
 #include <vector>
 
-#include "sdlclass.hpp"
-
 #include "entities/objects.hpp"
-
-#define FONTSIZE 20
 
 class World {
 	int cameraX, cameraY; //Left hand corner of the camera relative to the origin of the map
-
-	SDL* sdlclass;
 
 	public:
 		std::vector<WorldObject*> objects;
 		std::vector<Entity*> entities;
 		std::vector<Item*> items;
-		World(SDL& localsdlclass);
+		World();
 		void update(); //Updates Every entity on screen, to be called every time we recieve input
 		void draw(); //Draws the screen
 		void getCameraPos(int *x, int *y);

@@ -6,7 +6,7 @@
 #include "messages.hpp"
 
 namespace Input {
-	void handleInput(SDL_Keycode& key, World& world) {
+	void handleGameInput(SDL_Keycode& key, World& world) {
 			if (Messages::messages.size() >= 1) {
 				Messages::nextMessage();
 				return;
@@ -52,6 +52,8 @@ namespace Input {
 				case SDLK_g:
 					world.player.pickupItem(world.items);
 					break;
+				case SDLK_i:
+					
 				default:
 					timePassed = false;
 			}
@@ -64,4 +66,17 @@ namespace Input {
 				Messages::nextMessage();
 			}
 	}
+	/*void handleMenuInput(SDL_Keycode& key, Menu *menu) {
+		switch(key) {
+			case SDLK_KP_8:
+				menu->selection--;
+				break;
+			case SDLK_KP_2:
+				menu->selection++;
+				break;
+			case SDLK_RETURN:
+				//menu->select();
+				break;
+		}
+	} */
 }
